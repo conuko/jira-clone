@@ -4,6 +4,13 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  height: 100%;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 a {
@@ -13,4 +20,13 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.btn-primary {
+  background-color: #746bc4 !important;
+  border-color: #746bc4 !important;
+}
+
+.navbar {
+  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 5%);
 }
