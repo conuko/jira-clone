@@ -6,7 +6,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddTaskModal from "./AddTaskModal";
 
 interface BoardSectionProps {
-  title: string;
+  title: String;
   tasks: Array<Task>;
 }
 

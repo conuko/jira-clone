@@ -40,7 +40,7 @@ const Board = () => {
               })
             : [];
           return (
-            <BoardSection title="Backlog" tasks={filteredData} key={index} />
+            <BoardSection title={section} tasks={filteredData} key={index} />
           );
         })}
       </div>
