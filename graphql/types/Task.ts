@@ -19,7 +19,7 @@ export const Task = objectType({
               id: parent.id,
             },
           })
-          .users();
+          .user();
       },
     });
   },

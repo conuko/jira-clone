@@ -6,7 +6,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddTaskModal from "./AddTaskModal";
 
 interface BoardSectionProps {
-  title: String;
+  title: string;
   tasks: Array<Task>;
 }
 
@@ -33,6 +33,7 @@ const BoardSection: React.FC<BoardSectionProps> = ({ title, tasks }) => {
                   description={task.description}
                   id={task.id}
                   key={task.id}
+                  boardCategory={title}
                 />
               );
             })}
