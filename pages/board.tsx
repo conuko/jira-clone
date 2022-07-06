@@ -41,18 +41,19 @@ const UpdateTaskMutation = gql`
 `;
 
 const Board = () => {
+  const [tasks, setTasks] = useState([]);
   const { data, loading, error } = useQuery(AllTasksQuery, {
     onCompleted: (data) => {
       console.log(data);
+      setTasks(data);
     },
   });
 
   const sections: Array<string> = ["Backlog", "In-Progress", "Review", "Done"];
   const [updateTask] = useMutation(UpdateTaskMutation);
 
-  const onDragEnd = (result: any) => {
+  const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
-    console.log(result);
 
     if (!destination) {
       return;
@@ -62,10 +63,48 @@ const Board = () => {
       return;
     }
 
+    const updatedTasksList =
+      tasks &&
+      tasks.map((t: any) => {
+        if (t.id === draggableId) {
+          return {
+            ...t,
+            status: destination.droppableId,
+          };
+        } else {
+          return t;
+        }
+      });
+    setTasks(updatedTasksList);
+
     updateTask({
       variables: {
         id: draggableId,
         status: destination.droppableId,
+      },
+      update: (cache, { data }) => {
+        const existingTasks: any = cache.readQuery({
+          query: AllTasksQuery,
+        });
+        const updatedTasks = existingTasks!.tasks.map((t: any) => {
+          if (t.id === draggableId) {
+            return {
+              ...t,
+              ...data!.updateTask!,
+            };
+          } else {
+            return t;
+          }
+        });
+        cache.writeQuery({
+          query: AllTasksQuery,
+          data: { tasks: updatedTasks },
+        });
+        const dataInCache = cache.readQuery({ query: AllTasksQuery });
+        console.log(dataInCache);
+      },
+      onCompleted: (data) => {
+        // setTasks(data.tasks)
       },
     });
   };
