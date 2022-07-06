@@ -3,6 +3,7 @@ import { Card, Form, Button, Modal } from "react-bootstrap";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Draggable } from "react-beautiful-dnd";
 
 // GraphQL Mutation to create a task on the server
 const UpdateTaskMutation = gql`
@@ -41,6 +42,7 @@ const TaskComponent: React.FC<Task> = ({
   description,
   id,
   boardCategory,
+  index,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [taskTitle, setTaskTitle] = useState(title);
@@ -78,9 +80,19 @@ const TaskComponent: React.FC<Task> = ({
 
   return (
     <>
-      <Card className="task-container" onClick={() => handleShow()}>
-        <Card.Body>{title}</Card.Body>
-      </Card>
+      <Draggable draggableId={id} index={index}>
+        {(provided) => (
+          <Card
+            className="task-container"
+            onClick={() => handleShow()}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+            <Card.Body>{title}</Card.Body>
+          </Card>
+        )}
+      </Draggable>
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Update a Task</Modal.Title>

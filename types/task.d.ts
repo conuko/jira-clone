@@ -4,4 +4,5 @@ declare interface Task {
   id: string;
   status?: string;
   boardCategory?: string;
+  index?: number;
 }
