@@ -11,11 +11,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
       <ApolloProvider client={apolloClient}>
-        <Container className="main-content">
-          <Layout>
+        <Layout>
+          <Container className="main-content">
             <Component {...pageProps} />
-          </Layout>
-        </Container>
+          </Container>
+        </Layout>
       </ApolloProvider>
     </SessionProvider>
   );

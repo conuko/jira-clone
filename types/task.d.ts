@@ -5,4 +5,5 @@ declare interface Task {
   status?: string;
   boardCategory?: string;
   index?: number;
+  userId?: string;
 }

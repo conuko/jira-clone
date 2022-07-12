@@ -5,6 +5,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { Draggable } from "react-beautiful-dnd";
 
+const AllTasksQuery = gql`
+  query {
+    tasks {
+      id
+      title
+      description
+      status
+    }
+  }
+`;
+
+const AllUsersQuery = gql`
+  query {
+    users {
+      id
+      name
+    }
+  }
+`;
+
 // GraphQL Mutation to create a task on the server
 const UpdateTaskMutation = gql`
   mutation UpdateTask(
@@ -43,27 +63,40 @@ const TaskComponent: React.FC<Task> = ({
   id,
   boardCategory,
   index,
+  userId,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskDescription, setTaskDescription] = useState(description);
-  const [assignTo, setAssignTo] = useState("");
+  const [assignTo, setAssignTo] = useState(userId ? userId : "");
 
   const [updateTask, { data, loading, error }] =
     useMutation(UpdateTaskMutation);
   const [deleteTask] = useMutation(DeleteTaskMutation);
+
+  const { data: usersData, loading: usersLoading } = useQuery(AllUsersQuery);
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
   const handleTaskUpdate = (e: any) => {
     e.preventDefault();
+
+    let userId = "";
+
+    if (assignTo) {
+      userId = assignTo;
+    } else if (usersData) {
+      userId = usersData.users[0].id;
+    }
+
     updateTask({
       variables: {
         title: taskTitle,
         description: taskDescription,
         id: id,
         status: boardCategory,
+        userId: userId,
       },
     });
     handleClose();
@@ -83,7 +116,7 @@ const TaskComponent: React.FC<Task> = ({
       <Draggable draggableId={id} index={index}>
         {(provided) => (
           <Card
-            className="task-container"
+            className="task-container p-2"
             onClick={() => handleShow()}
             {...provided.draggableProps}
             {...provided.dragHandleProps}

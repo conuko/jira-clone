@@ -16,7 +16,7 @@ export const Task = objectType({
         return await ctx.prisma.task
           .findUnique({
             where: {
-              id: parent.id,
+              id: parent.id || undefined,
             },
           })
           .user();
