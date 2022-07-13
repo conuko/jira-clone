@@ -4,6 +4,7 @@ import BoardSection from "../components/BoardSection";
 import { gql, useQuery, useMutation, useLazyQuery } from "@apollo/client";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useSession } from "next-auth/react";
+import AccessDenied from "./accessDenied";
 
 const AllTasksQuery = gql`
   query {
@@ -144,6 +145,10 @@ const Board = () => {
       getTasks({ variables: { email: session.user!.email! } });
     }
   };
+
+  if (!session) {
+    return <AccessDenied />;
+  }
 
   return (
     <div className="pt-3 h-100 d-flex flex-column">
