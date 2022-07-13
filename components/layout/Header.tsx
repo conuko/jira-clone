@@ -19,9 +19,7 @@ const Header = () => {
         <Navbar.Brand href="/">Project Management</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
-          <Navbar.Text className="p-3">
-            Signed in as: <a href="/login">{name}</a>
-          </Navbar.Text>
+          <Navbar.Text className="p-3">Signed in as: {name}</Navbar.Text>
           <Link href="/login" passHref>
             <Button onClick={() => signOut()}>Log out</Button>
           </Link>

@@ -68,7 +68,7 @@ const Board = () => {
     { data: tasksData, loading: tasksLoading, error: tasksError },
   ] = useLazyQuery(GetUserQuery);
   const [tasks, setTasks]: any = useState([]);
-  const sections: Array<String> = ["Backlog", "In-Progress", "Review", "Done"];
+  const sections: Array<string> = ["Backlog", "In-Progress", "Review", "Done"];
 
   useEffect(() => {
     if (session) {
@@ -82,11 +82,7 @@ const Board = () => {
   if (tasksLoading) return <p>Loading...</p>;
   if (tasksError) return <p>Oh no... {tasksError.message}</p>;
 
-  const onDragEnd = (result: {
-    destination: any;
-    source: any;
-    draggableId: any;
-  }) => {
+  const onDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
 
     if (!destination) {

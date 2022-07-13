@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Card, Form, Button, Modal } from "react-bootstrap";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import {
+  gql,
+  Reference,
+  StoreObject,
+  useMutation,
+  useQuery,
+} from "@apollo/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { Draggable } from "react-beautiful-dnd";
@@ -104,8 +110,24 @@ const TaskComponent: React.FC<Task> = ({
 
   const handleTaskDelete = () => {
     deleteTask({
-      variables: {
-        id: id,
+      variables: { id: id },
+      update: (cache) => {
+        // const data : any = cache.readQuery({ query: AllTasksQuery });
+        // const updatedTasks = data.tasks.filter(({id: itemId}) => itemId !== id);
+        // cache.writeQuery({
+        //   query: AllTasksQuery,
+        //   data: {tasks: updatedTasks}
+        // });
+        cache.modify({
+          fields: {
+            tasks(existingTaskRefs, { readField }) {
+              return existingTaskRefs.filter(
+                (taskRef: Reference | StoreObject | undefined) =>
+                  id !== readField("id", taskRef)
+              );
+            },
+          },
+        });
       },
     });
     handleClose();
