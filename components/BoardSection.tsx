@@ -9,7 +9,7 @@ import { Droppable } from "react-beautiful-dnd";
 import AddTaskModal from "./AddTaskModal";
 
 interface BoardSectionProps {
-  title: String;
+  title: string;
   tasks: any;
   reFetchTasks: () => void;
 }
