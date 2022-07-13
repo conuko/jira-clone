@@ -113,7 +113,7 @@ const TaskComponent: React.FC<Task> = ({
 
   return (
     <>
-      <Draggable draggableId={id} index={index}>
+      <Draggable draggableId={id} index={index!}>
         {(provided) => (
           <Card
             className="task-container p-2"

@@ -67,20 +67,20 @@ const Board = () => {
     getTasks,
     { data: tasksData, loading: tasksLoading, error: tasksError },
   ] = useLazyQuery(GetUserQuery);
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks]: any = useState([]);
   const sections: Array<String> = ["Backlog", "In-Progress", "Review", "Done"];
 
   useEffect(() => {
     if (session) {
-      getTasks({ variables: { email: session.user.email } });
+      getTasks({ variables: { email: session.user!.email! } });
     }
-  }, [session]);
+  }, [getTasks, session]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Oh no... {error.message}</p>;
 
-  // if (tasksLoading) return <p>Loading...</p>
-  // if (tasksError) return <p>Oh no... {tasksError.message}</p>
+  if (tasksLoading) return <p>Loading...</p>;
+  if (tasksError) return <p>Oh no... {tasksError.message}</p>;
 
   const onDragEnd = (result: {
     destination: any;
@@ -145,7 +145,7 @@ const Board = () => {
 
   const reFetchTasks = () => {
     if (session) {
-      getTasks({ variables: { email: session.user.email } });
+      getTasks({ variables: { email: session.user!.email! } });
     }
   };
 
