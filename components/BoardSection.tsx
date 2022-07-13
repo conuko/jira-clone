@@ -1,29 +1,42 @@
 import React, { useState } from "react";
-import TaskComponent from "./TaskComponent";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Col, Button, Card, Form, Container } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import AddTaskModal from "./AddTaskModal";
+import { Modal } from "react-bootstrap";
+import { gql, useMutation } from "@apollo/client";
+import TaskComponent from "./TaskComponent";
 import { Droppable } from "react-beautiful-dnd";
+import AddTaskModal from "./AddTaskModal";
 
 interface BoardSectionProps {
-  title: string;
-  tasks: Array<Task>;
+  title: String;
+  tasks: any;
+  reFetchTasks: () => void;
 }
 
-const BoardSection: React.FC<BoardSectionProps> = ({ title, tasks }) => {
+const BoardSection: React.FC<BoardSectionProps> = ({
+  title,
+  tasks,
+  reFetchTasks,
+}) => {
   const [showModal, setShowModal] = useState(false);
 
-  const handleClose = () => setShowModal(false);
-
+  const handleClose = () => {
+    setShowModal(false);
+    reFetchTasks();
+  };
   const handleShow = () => setShowModal(true);
 
   return (
     <>
       <Col md={3} className="d-flex flex-column p-2">
-        <div className="board-sectioin-header d-flex flex-row align-items-center">
+        <div className="board-section-header d-flex flex-row align-items-center">
           <h3 className="me-auto">{title}</h3>
-          <FontAwesomeIcon icon={faPlus} />
+          <FontAwesomeIcon
+            icon={faPlus}
+            style={{ color: "#6f7782" }}
+            onClick={handleShow}
+          />
         </div>
         <Droppable droppableId={title}>
           {(provided) => (
@@ -40,28 +53,21 @@ const BoardSection: React.FC<BoardSectionProps> = ({ title, tasks }) => {
                       description={task.description}
                       id={task.id}
                       key={task.id}
-                      boardCategory={title}
                       index={index}
                     />
                   );
                 })}
               {tasks.length > 0 && (
                 <Button className="add-wrapper" onClick={handleShow}>
-                  <FontAwesomeIcon
-                    icon={faPlus}
-                    style={{ paddingRight: "10px" }}
-                  />
-                  Add Task
+                  <FontAwesomeIcon icon={faPlus} style={{ padding: "2px" }} />
+                  Add task
                 </Button>
               )}
               {tasks.length === 0 && (
                 <div className="is-empty d-flex flex-column">
                   <Button className="add-wrapper" onClick={handleShow}>
-                    <FontAwesomeIcon
-                      icon={faPlus}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    Add Task
+                    <FontAwesomeIcon icon={faPlus} style={{ padding: "2px" }} />
+                    Add task
                   </Button>
                 </div>
               )}

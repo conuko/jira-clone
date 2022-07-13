@@ -26,6 +26,15 @@ const CreateTaskMutation = gql`
   }
 `;
 
+const AllUsersQuery = gql`
+  query {
+    users {
+      id
+      name
+    }
+  }
+`;
+
 const AddTaskModal = ({
   showModal,
   handleClose,
@@ -50,13 +59,26 @@ const AddTaskModal = ({
     }
   );
 
+  const { data: usersData, loading: usersLoading } = useQuery(AllUsersQuery);
+
   const handleCreateTask = (e: any) => {
     e.preventDefault();
+
+    let userId = "";
+
+    // if a task is not assigned to a user manually, assign it to the first user on the list
+    if (assignTo) {
+      userId = assignTo;
+    } else if (usersData) {
+      userId = usersData.users[0].id;
+    }
+
     createTask({
       variables: {
         title: taskTitle,
         description: taskDescription,
         status: boardCategory,
+        userId: userId,
       },
     });
     handleClose();
@@ -96,7 +118,16 @@ const AddTaskModal = ({
               onChange={(e) => {
                 setAssignTo(e.target.value);
               }}
-            ></Form.Select>
+            >
+              {usersData &&
+                usersData.users.map((user: User) => {
+                  return (
+                    <option key={user.id} value={user.id}>
+                      {user.name}
+                    </option>
+                  );
+                })}
+            </Form.Select>
           </Form.Group>
           <Button variant="primary" type="submit">
             Submit
