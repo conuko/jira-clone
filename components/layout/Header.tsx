@@ -17,7 +17,7 @@ const Header = () => {
     return (
       <Navbar expand="lg">
         <Container>
-          <Navbar.Brand href="/">Project Management</Navbar.Brand>
+          <Navbar.Brand href="/">Jira Clone</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse
             id="basic-navbar-nav"
@@ -35,7 +35,7 @@ const Header = () => {
   return (
     <Navbar expand="lg">
       <Container>
-        <Navbar.Brand href="/">Project Management</Navbar.Brand>
+        <Navbar.Brand href="/">Jira Clone</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           {/*           <Link href="/board" passHref>

@@ -27,8 +27,12 @@ a {
 }
 
 .btn-primary {
-  background-color: #746bc4 !important;
-  border-color: #746bc4 !important;
+  background-color: #0d6efd !important;
+  border-color: #0d6efd !important;
+}
+
+.btn-primary:hover {
+  background-color: #0d6ea9 !important;
 }
 
 .card {
